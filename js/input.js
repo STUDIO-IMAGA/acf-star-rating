@@ -1,6 +1,6 @@
 (function($){
-	
-	
+
+
 	function initialize_field( $el ) {
 
 		var container = $el;
@@ -13,31 +13,23 @@
 		star_list_items
 			.bind("click", function(e){
 				e.preventDefault();
-				
+
 				// calculate star value
 				var star_value = $(this).index();
 				var width = $(this).innerWidth();
-				var offset = $(this).offset(); 
-				var isHalf = (width / 2) > (e.pageX - offset.left);
-
-				if (isHalf) {
-					// left side clicked, only half star
-					star_value -= 0.5;
-				}
+				var offset = $(this).offset();
 
 				star_field.val(star_value + 1);
 				clearActiveStarClassesFromList();
 
 				star_list_items.each(function(list_index){
-					
+
 					if( list_index <= star_value ){
 						addActiveStarClass( $("i", this) );
-					} else if(isHalf && list_index <= star_value + 1){
-						addHalfActiveStarClass( $("i", this) );
 					}
 
 				});
-				
+
 			});
 
 		clear_value_button
@@ -48,22 +40,22 @@
 			});
 
 		function clearActiveStarClassesFromList(){
-			star_list_item_stars.removeClass('fa-star').removeClass('fa-star-half-o').addClass('fa-star-o');
+			star_list_item_stars.removeClass('fa-star').addClass('fa-star-o');
 		}
 
 		function addActiveStarClass( el ){
-			el.removeClass('fa-star-o').removeClass('fa-star-half-o').addClass('fa-star');
+			el.removeClass('fa-star-o').addClass('fa-star');
 		}
 
 		function addHalfActiveStarClass( el ){
-			el.removeClass('fa-star-o').removeClass('fa-star').addClass('fa-star-half-o');
+			el.removeClass('fa-star-o').addClass('fa-star-half-o');
 		}
-		
+
 	}
-	
-	
+
+
 	if( typeof acf.add_action !== 'undefined' ) {
-	
+
 		/*
 		*  ready append (ACF5)
 		*
@@ -77,26 +69,26 @@
 		*  @param	$el (jQuery selection) the jQuery element which contains the ACF fields
 		*  @return	n/a
 		*/
-		
+
 		acf.add_action('ready append', function( $el ){
-			
+
 			// search $el for fields of type 'star_rating'
 			acf.get_fields({ type : 'star_rating'}, $el).each(function(){
-				
+
 				initialize_field( $(this) );
-				
+
 			});
-			
+
 		});
-		
-		
+
+
 	} else {
-		
-		
+
+
 		/*
 		*  acf/setup_fields (ACF4)
 		*
-		*  This event is triggered when ACF adds any new elements to the DOM. 
+		*  This event is triggered when ACF adds any new elements to the DOM.
 		*
 		*  @type	function
 		*  @since	1.0.0
@@ -107,18 +99,18 @@
 		*
 		*  @return	n/a
 		*/
-		
+
 		$(document).live('acf/setup_fields', function(e, postbox){
-			
+
 			$(postbox).find('.field[data-field_type="star_rating"]').each(function(){
-				
+
 				initialize_field( $(this) );
-				
+
 			});
-		
+
 		});
-	
-	
+
+
 	}
 
 
